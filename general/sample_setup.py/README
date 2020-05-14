@@ -1,0 +1,29 @@
+Dies ist eine sehr detailierte
+Beschreibung über mehrere
+Zeilen....
+
+Informationen zum weiteren Aufbau unter:
+
+https://setuptools.readthedocs.io/en/latest/setuptools.html
+
+https://packaging.python.org/tutorials/packaging-projects/
+
+zum installieren:
+allgemein:
+
+    python3 -m pip install --user --upgrade setuptools wheel
+
+    python3 setup.py sdist bdist_wheel
+
+    python3 -m pip install --user --upgrade twine
+
+Account für Test Register:
+    https://test.pypi.org/
+
+hochladen ins Test Register:
+
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+Installation aus Test Register:
+
+    python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps SetupSample-USERNAME
