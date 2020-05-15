@@ -1,233 +1,250 @@
-#Anbei der Python Code zur Covid 19 Analyse von
-#Julian Gerhardt
-#Forschungsfrage des Projekt: Analyse von Covid 19 auf den verschiedenen Kontinenten
-#Der Code wurde mit Sypder(Anaconda) geschrieben und beinhaltet die packages
-#'pandas', 'matplotlib' und 'numpy', welche in den Workshopvideos bei Data Camp vorgestellt wurden
+'''
+Auswertung der aktuellen Covid-19 Situation von Marcus Wurster
 
-#.........................................
-#1.Daten einlesen (Daten habe ich mir vorher von Excel als .csv Datenpaket umgewandelt)
-import pandas as pd #package 'pandas' einlesen für die Daten aus Excel bzw. csv. (Die Vorgehensweise hatte ich aus Data Camp)
-data= pd.read_csv("COVID-19-Daten.csv", delimiter= ';') #Die Trennstriche sind ';'
-print(data) # einlesen der Daten(Achtung: von meinem PC) und anzeigen
-print(data.head()) #Zum Test, ob die Daten alles berücksichtigen
-#.........................................
-#2. Daten bearbeiten, um vergleichbar zu machen
-data_new= data[["dateRep","cases","deaths","countriesAndTerritories","continentExp"]]
-print(data_new) #Es werden nur die wichtigsten Spalten für die Analyse gebraucht, den Rest lasse ich weg
-print(data_new.head())#Zum Test, ob die Daten alles berücksichtigen
-#..................
-#nach einzelnen Kontinenten Teiltabellen definieren (ohne "Other")
-#im Projekt möchte ich die Entwicklung auf den jeweiligen Kontinenten analysieren,
-#deswegen muss die gesamte Tabelle im data.frame in Einzeltabellen nach den Kontinenten 'zerlegt' werden
-Asia= data_new.copy() #ich lege eine Kopie an, damit sich aus den ursprünglichen Daten nichts "versehentlich" ändert
-Asia= data_new[(data_new.continentExp == "Asia")] # Der Befehl gleicht die Spalte'continentExp" nach den einzelnen Kontinenten ab
-Asia= Asia.sort_values(["dateRep"]) #wichtig, das Datum sortieren (leider wird der 31.12.19 an das Ende gepackt. Habe leider nicht herausgefunden, wie sich das ändern lässt....)
-print(Asia) # Teiltabelle ausgeben
-#....................
-Africa= data_new.copy() # gleiches vorgehen für die anderen Kontinente
-Africa= data_new[(data_new.continentExp == "Africa")]
-Afirca= Africa.sort_values(["dateRep"])
-print(Africa)
-#...................
-America= data_new.copy()
-America= data_new[(data_new.continentExp == "America")]
-America= America.sort_values(["dateRep"])
-print(America)
-#..................
-Europe= data_new.copy()
-Europe= data_new[(data_new.continentExp == "Europe")]
-Europe= Europe.sort_values(["dateRep"])
-print(Europe)
-#...........
-Oceania= data_new.copy()
-Oceania= data_new[(data_new.continentExp == "Oceania")]
-Oceania= Oceania.sort_values(["dateRep"])
-print(Oceania)
-#für alle Kontinente Teiltabellen für die Analyse erstellt, Daten sind aufbereitet
-#...........
-#3.Statistischer Vergleich zwischen den Kontinenten auf Basis von Lageparametern
-import numpy as np #für statistische Analyse package 'numpy'
-#Toteszahlen vergleichen
-print("\n") #Das schafft einen Zeilenumbruch im Output (Quelle:https://www.python-forum.de/viewtopic.php?t=41566)
-print("Übersicht über die Todeszahlen:")
-Asien_deaths= [[np.mean(Asia.deaths)],[np.max(Asia.deaths)],[np.min(Asia.deaths)],[np.sum(Asia.deaths)]] #Verschiedene Lageparameter für die Analyse auswählen (hier Beispiel Asien)
-print("Tote in Asien:","Mittelwert:",Asien_deaths[0],"Maximum:",Asien_deaths[1],"Minimum:"
-	  ,Asien_deaths[2],"Gesamt:",Asien_deaths[-1]) #Zur Ausgabe kommentieren, [] greigt jeweils auf den Index zu
-Africa_deaths= [[np.mean(Africa.deaths)],[np.max(Africa.deaths)],[np.min(Africa.deaths)],[np.sum(Africa.deaths)]] #gleiches Vorgehen bei den anderen Kontinenten
-print("Tote in Afrika:","Mittelwert:",Africa_deaths[0],"Maximum:",Africa_deaths[1],"Minimum:"
-	  ,Africa_deaths[2],"Gesamt:",Africa_deaths[-1])
-America_deaths= [[np.mean(America.deaths)],[np.max(America.deaths)],[np.min(America.deaths)],[np.sum(America.deaths)]]
-print("Tote in Amerika:","Mittelwert:",America_deaths[0],"Maximum:",America_deaths[1],"Minimum:"
-	  ,America_deaths[2],"Gesamt:",America_deaths[-1])
-Europe_deaths= [[np.mean(Europe.deaths)],[np.max(Europe.deaths)],[np.min(Europe.deaths)],[np.sum(Europe.deaths)]]
-print("Tote in Europa:","Mittelwert:",Europe_deaths[0],"Maximum:",Europe_deaths[1],"Minimum:"
-	  ,Europe_deaths[2],"Gesamt:",Europe_deaths[-1])
-Oceania_deaths= [[np.mean(Oceania.deaths)],[np.max(Oceania.deaths)],[np.min(Oceania.deaths)],[np.sum(Oceania.deaths)]]
-print("Tote in Ozeanien:","Mittelwert:",Oceania_deaths[0],"Maximum:",Oceania_deaths[1],"Minimum:"
-	  ,Oceania_deaths[2],"Gesamt:",Oceania_deaths[-1])
-#Vergleich zwischen den Paramertern mithilfe von if und Relationszeichen (Vorgehen wie in Data Camp Video gezeigt)
-#Vergleich zwischen den Todezahlen an einem Tag
-print("Vergleich zwischen den Todeszahlen:")
-if np.max(America.deaths) > np.max(Africa.deaths) | np.max(Asia.deaths) | np.max(Europe.deaths) | np.max(Oceania.deaths) : print("Die meisten Toten an einem Tag gab es in Amerika!") # gibt dann jeweils eine Variante aus
-if np.max(Africa.deaths) > np.max(America.deaths) | np.max(Asia.deaths) | np.max(Europe.deaths) | np.max(Oceania.deaths) : print("Die meisten Toten an einem Tag gab es in Afrika!")
-if np.max(Asia.deaths) > np.max(Africa.deaths) | np.max(America.deaths) | np.max(Europe.deaths) | np.max(Oceania.deaths) : print("Die meisten Toten an einem Tag gab es in Asien!")
-if np.max(Europe.deaths) > np.max(Africa.deaths) | np.max(Asia.deaths) | np.max(America.deaths) | np.max(Oceania.deaths) : print("Die meisten Toten an einem Tag gab es in Europa!")
-if np.max(Oceania.deaths) > np.max(Africa.deaths) | np.max(Asia.deaths) | np.max(Europe.deaths) | np.max(America.deaths) : print("Die meisten Toten an einem Tag gab es in Ozeanien!")
-#Vergleich zwischen den Todezahlen insgesamt, simultanes Vorgehen wie oben
-if np.sum(America.deaths) > np.sum(Africa.deaths) | np.sum(Asia.deaths) | np.sum(Europe.deaths) | np.sum(Oceania.deaths) : print("Die meisten Toten insgesamt gab es in Amerika!")
-if np.sum(Africa.deaths) > np.sum(America.deaths) | np.sum(Asia.deaths) | np.sum(Europe.deaths) | np.sum(Oceania.deaths) : print("Die meisten Toten insgesamt gab es in Afrika!")
-if np.sum(Asia.deaths) > np.sum(Africa.deaths) | np.sum(America.deaths) | np.sum(Europe.deaths) | np.sum(Oceania.deaths) : print("Die meisten Toten insgesamt gab es in Asien!")
-if np.sum(Europe.deaths) > np.sum(Africa.deaths) | np.sum(Asia.deaths) | np.sum(America.deaths) | np.sum(Oceania.deaths) : print("Die meisten Toten insgesamt gab es in Europa!")
-if np.sum(Oceania.deaths) > np.sum(Africa.deaths) | np.sum(Asia.deaths) | np.sum(Europe.deaths) | np.sum(America.deaths) : print("Die meisten Toten insgesamt gab es in Ozeanien!")
-#...............
-#Infiziertenfälle vergleichen, Simultanes Vorgehen wie oben, nur andere Spalte
-print("\n")
-print("Übersicht über die Infiziertenzahlen:")
-Asien_cases= [[np.mean(Asia.cases)],[np.max(Asia.cases)],[np.min(Asia.cases)],[np.sum(Asia.cases)]]
-print("Fälle in Asien:","Mittelwert:",Asien_cases[0],"Maximum:",Asien_cases[1],"Minimum:"
-	  ,Asien_cases[2],"Gesamt:",Asien_cases[-1])
-Africa_cases= [[np.mean(Africa.cases)],[np.max(Africa.cases)],[np.min(Africa.cases)],[np.sum(Africa.cases)]]
-print("Fälle in Afrika:","Mittelwert:",Africa_cases[0],"Maximum:",Africa_cases[1],"Minimum:"
-	  ,Africa_cases[2],"Gesamt:",Africa_cases[-1])
-America_cases= [[np.mean(America.cases)],[np.max(America.cases)],[np.min(America.cases)],[np.sum(America.cases)]]
-print("Fälle in Amerika:","Mittelwert:",America_cases[0],"Maximum:",America_cases[1],"Minimum:"
-	  ,America_cases[2],"Gesamt:",America_cases[-1])
-Europe_cases= [[np.mean(Europe.cases)],[np.max(Europe.cases)],[np.min(Europe.cases)],[np.sum(Europe.cases)]]
-print("Fälle in Europa:","Mittelwert:",Europe_cases[0],"Maximum:",Europe_cases[1],"Minimum:"
-	  ,Europe_cases[2],"Gesamt:",Europe_cases[-1])
-Oceania_cases= [[np.mean(Oceania.cases)],[np.max(Oceania.cases)],[np.min(Oceania.cases)],[np.sum(Oceania.cases)]]
-print("Fälle in Ozeanien:","Mittelwert:",Oceania_cases[0],"Maximum:",Oceania_cases[1],"Minimum:"
-	  ,Oceania_cases[2],"Gesamt:",Oceania_cases[-1])
-#Vergleich zwischen den geringsten Infiziertenzahlen
-print("Vergleich zwischen den Infiziertenzahlen:")
-if np.sum(America.cases) > np.sum(Africa.cases) | np.sum(Asia.cases) | np.sum(Europe.cases) | np.sum(Oceania.cases) : print("Die meisten Infektionsfälle insgesamt gab es in Amerika!")
-if np.sum(Africa.cases) > np.sum(America.cases) | np.sum(Asia.cases) | np.sum(Europe.cases) | np.sum(Oceania.cases) : print("Die meisten Infektionsfälle insgesamt gab es in Afrika!")
-if np.sum(Asia.cases) > np.sum(Africa.cases) | np.sum(America.cases) | np.sum(Europe.cases) | np.sum(Oceania.cases) : print("Die meisten Infektionsfälle insgesamt gab es in Asien!")
-if np.sum(Europe.cases) > np.sum(Africa.cases) | np.sum(Asia.cases) | np.sum(America.cases) | np.sum(Oceania.cases) : print("Die meisten Infektionsfälle insgesamt gab es in Europa!")
-if np.sum(Oceania.cases) > np.sum(Africa.cases) | np.sum(Asia.cases) | np.sum(Europe.cases) | np.sum(America.cases) : print("Die meisten Infektionsfälle insgesamt gab es in Ozeanien!")
-#..................
-#Korrelation zwischen Fällen und Tote nach Kontinent und insgesamt mithilfe von np.corrcoef, als interessante Kennzahl
-print("\n")
-print("(Linearer) Zusammenhang zwischen Todefällen und Infiziertenzahlen:")
-Asien_correl=np.corrcoef(Asia.deaths,Asia.cases) #den von numpy Methode genutzten Befehl corrcoef (Quelle:https://benalexkeen.com/correlation-in-python/)
-Asien_correl= np.round(Asien_correl, 2) #Den Korrelationskoeffizient auf zwei Kommastellen runden
-print("Die Korrelation zwischen Toten und Fällen in Asien ist:",Asien_correl[0,1])
-Africa_correl=np.corrcoef(Africa.deaths,Africa.cases) #gleiches Vorgehen bei den anderen
-Africa_correl=np.round(Africa_correl, 2)
-print("Die Korrelation zwischen Toten und Fällen in Afrika ist:",Africa_correl[0,1])
-America_correl=np.corrcoef(America.deaths,America.cases)
-America_correl= np.round(America_correl, 2)
-print("Die Korrelation zwischen Toten und Fällen in Amerika ist:",America_correl[0,1])
-Europe_correl=np.corrcoef(Europe.deaths,Europe.cases)
-Europe_correl= np.round(Europe_correl, 2)
-print("Die Korrelation zwischen Toten und Fällen in Europa ist:",Europe_correl[0,1])
-Oceania_correl=np.corrcoef(Oceania.deaths,Oceania.cases)
-Oceania_correl= np.round(Oceania_correl, 2)
-print("Die Korrelation zwischen Toten und Fällen in Ozeanien ist:",Oceania_correl[0,1])
-world_correl=np.corrcoef(data_new.deaths,data_new.cases)
-world_correl= np.round(world_correl, 2)
-print("Die Korrelation zwischen Toten und Fällen auf der Welt ist:",world_correl[0,1])
-#Ordnen der Korrelationskoeffizienten für die Reihenfolgebeziehung, durch die Funktion sorted (Quelle:https://www.geeksforgeeks.org/python-sort-python-dictionaries-by-key-or-value/)
-print("Die geordneten Korrelationen sind aufsteigend:")
-Liste_correl= ([ Asien_correl[0,1],Africa_correl[0,1], America_correl[0,1], Europe_correl[0,1], Oceania_correl[0,1] ])
-Liste_correl= sorted(Liste_correl)
-print(sorted(Liste_correl))
-#....................
-#4.Gaphische Abbildungen
-#Diese habe ich, wie im Video gezeigt, mit package "matplotlib.pyplot" gestaltet
-#Graphische Darstellung der Korrelation
+Kurzer Kommentar zu folgendem Pythonscript:
+
+Die Daten stammen von der ECDC (European Centre for Disease Prevention and Control) und
+können unter folgendem Link selbst heruntergeladen werden:
+https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
+
+Alle Darstellungen und Berechnungen beziehen stets die aktuellen Daten mit ein und
+sollten somit auch stets tagesaktuell sein. Innerhalb des scripts sind interesannte Printfunktionen
+für einzelne Databases und Ergebnisse als Kommentar ergänzt und eingerückt. Sie können durch einfaches
+Entfernen des # und der Einrückung mitausgegeben werden. Außerdem ist anzumerken, dass durch eine
+eventuell deutlich veränderte Datenlage die Bezeichnungen innerhalb der Grafiken verschoben sein können.
+Dies ist aufgrund der Verwendung der stets aktuellen Daten leider nicht zu verhindern.
+
+Die aktuellen Daten werden auch bei der Auswahl der Top10 Länder und dem Land mit den meisten Fällen stets miteinbezogen.
+Die betrachteten Länder können sich hiermit auch von Tag zu Tag ändern.
+
+Ab Version Python 3.x sollte das Script ohne Probleme laufen.
+'''
+
+# -*- coding: utf-8 -*-
+
+#Notwendige python libraries importieren und plot style setzen
+
 import matplotlib.pyplot as plt
-#import matplotlib als alternatives package hier nicht gebraucht
-plt.scatter(Asia.deaths,Asia.cases, edgecolors="red") #dabei habe ich die Ränder mit rot eingefärbt
-plt.xlabel("Todesfälle Asien") # siehe Kommentierungen der Axen
-plt.ylabel("Infiziertenzahl Asien")
-plt.show()
-plt.scatter(Africa.deaths,Africa.cases, edgecolors="green")
-plt.xlabel("Todesfälle Afrika")
-plt.ylabel("Infiziertenzahl Afrika")
-plt.show()
-plt.scatter(America.deaths,America.cases, edgecolors="yellow")
-plt.xlabel("Todesfälle Amerika")
-plt.ylabel("Infiziertenzahl Amerika")
-plt.show()
-plt.scatter(Europe.deaths,Europe.cases, edgecolors="blue")
-plt.xlabel("Todesfälle Europa")
-plt.ylabel("Infiziertenzahl Europa")
-plt.show()
-plt.scatter(Oceania.deaths,Oceania.cases, edgecolors="black")
-plt.xlabel("Todesfälle Ozeanien")
-plt.ylabel("Infiziertenzahl Ozeanien")
-plt.show()
-plt.scatter(data_new.deaths,data_new.cases, edgecolors="purple")
-plt.xlabel("Todesfälle weltweit" )
-plt.ylabel("Infiziertenzahl weltweit")
-plt.show()
-#...................
-#Graphische Darstellung der Entwicklung der Todeszahlen
-#Asien vs.Africa
-plt.plot(Asia.dateRep,Asia.deaths,'red', label='Asien') # durch die 'label' Funktion lässt sich eine Legende erstellen(wie im Data Camp Video gezeigt)
-plt.plot(Africa.dateRep,Africa.deaths,'blue',label='Afrika')
-plt.legend()
-plt.ylabel("Todesfälle Afrika und Asien")
-plt.xlabel("Entwicklung zwischen Januar und April 2020") # die Skalierung ist nicht ganz so schön geworden ...
-plt.show()
-#.............................
-#gleiches Vorgehen wie oben
-#Asien vs.Africa vs.Amerika
-plt.plot(Asia.dateRep,Asia.deaths,'red', label='Asien')
-plt.plot(Africa.dateRep,Africa.deaths,'blue',label='Afrika')
-plt.plot(America.dateRep,America.deaths,"green", label="Amerika")
-plt.legend()
-plt.ylabel("Todesfälle Afrika,Asien und Amerika")
-plt.xlabel("Entwicklung zwischen Januar und April 2020")
-plt.show()
-#..........................
-#Welt
-plt.plot(Asia.dateRep,Asia.deaths,'red', label='Asien')
-plt.plot(Africa.dateRep,Africa.deaths,'blue',label='Afrika')
-plt.plot(America.dateRep,America.deaths,"green", label="Amerika")
-plt.plot(Europe.dateRep,Europe.deaths,"yellow", label="Europa")
-plt.plot(Oceania.dateRep,Oceania.deaths,"black", label="Ozeanien")
-plt.legend()
-plt.ylabel("Todesfälle weltweit")
-plt.xlabel("Entwicklung zwischen Januar und April 2020")
-plt.show()
-#............................
-#Graphische Darstellung der Entwicklung der Fallzahlen
-#Asien vs.Africa
-plt.plot(Asia.dateRep,Asia.cases,'red', label='Asien')
-plt.plot(Africa.dateRep,Africa.cases,'blue',label='Afrika')
-plt.legend()
-plt.ylabel("Infiziertenfälle Afrika und Asien")
-plt.xlabel("Entwicklung zwischen Januar und April 2020")
-plt.show()
-#.............................
-#wieder gleiches Vorgehen,nur andere Variable
-#Asien vs.Africa vs.Amerika
-plt.plot(Asia.dateRep,Asia.cases,'red', label='Asien')
-plt.plot(Africa.dateRep,Africa.cases,'blue',label='Afrika')
-plt.plot(America.dateRep,America.cases,"green", label="Amerika")
-plt.legend()
-plt.ylabel("Infiziertenfälle Afrika,Asien und Amerika")
-plt.xlabel("Entwicklung zwischen Januar und April 2020")
-plt.show()
-#..........................
-#Welt
-plt.plot(Asia.dateRep,Asia.cases,'red', label='Asien')
-plt.plot(Africa.dateRep,Africa.cases,'blue',label='Afrika')
-plt.plot(America.dateRep,America.cases,"green", label="Amerika")
-plt.plot(Europe.dateRep,Europe.cases,"yellow", label="Europa")
-plt.plot(Oceania.dateRep,Oceania.cases,"black", label="Ozeanien")
-plt.legend()
-plt.title('Entwicklung der Infiziertenfälle weltweit') #der Graphik eine Überschrift geben
-plt.ylabel("Infiziertenfälle weltweit")
-plt.xlabel("Entwicklung zwischen Januar und April 2020")
-plt.show()
-print("\n")
-#.............................
-print("Vielen Dank für den Python-Workshop und die Videos bei DataCamp! Dadurch konnte ich einen tollen,ersten Einblick in Data Science für Python gewinnen!")
-print("Beste Grüße, Julian Gerhardt.")
+import pandas as pd
+import numpy as np
+
+plt.style.use('ggplot')
 
 
+#Daten importieren und als DataFrame speichern
+
+csv_url = 'https://opendata.ecdc.europa.eu/covid19/casedistribution/csv'
+
+df_original = pd.read_csv(csv_url)
+
+
+#Ursprünglichen DataFrame begutachten (optional)
+
+#print(df_original.head())
+#print(df_original.info())
+#print(df_original.columns.values)
+
+
+
+#Aktuelle weltweite Fallzahen, Todeszahlen und Sterblichkeitsrate berechnen und ausgeben
+
+sum_of_all_cases_worldwide = df_original['cases'].sum()
+sum_of_all_deaths_worldwide = df_original['deaths'].sum()
+death_rate_worldwide = round(sum_of_all_deaths_worldwide / sum_of_all_cases_worldwide, 5)
+
+lista = ['Weltweite_Fälle', 'Weltweite_Tode', 'Sterblichkeitsrate_weltweit']
+
+listb = [sum_of_all_cases_worldwide, sum_of_all_deaths_worldwide, death_rate_worldwide]
+
+keyvalues_worldwide = dict(zip(lista, listb))
+
+print(keyvalues_worldwide)
+
+
+#Entwicklung weltweiter Fälle/Tode herausfinden und grafisch darstellen
+
+worldwide_per_day = df_original.groupby(['year', 'month','day'])[['cases', 'deaths']].sum()
+#print(worldwide_per_day)
+
+cum_worldwide_per_day_cases = np.cumsum(worldwide_per_day['cases']) #kumulierte Fälle
+cum_worldwide_per_day_deaths = np.cumsum(worldwide_per_day['deaths'])
+#print(cum_worldwide_per_month)
+
+plt.figure(figsize=(11,6))
+cum_worldwide_per_day_cases.plot(x='day', y='cases', kind='line')
+cum_worldwide_per_day_deaths.plot(x='day', y='deaths', kind='line')
+plt.xticks(rotation=15)
+plt.title('Kummulierte weltweite Covid-19 Fälle/Tode', fontsize=14)
+str = {'Aktuelle weltweite Fallzahl:', sum_of_all_cases_worldwide}
+plt.text(20,3000000,str, fontsize=12)
+plt.legend()
+plt.show()
+
+
+#DataFrame bearbeiten und um Merkwürdigkeiten bereinigen
+
+df_original = df_original.drop(['geoId', 'countryterritoryCode', 'dateRep'], axis=1)
+
+df_original = df_original[df_original.continentExp != 'Other']
+
+df_original['countriesAndTerritories'] = df_original['countriesAndTerritories'].replace(
+	{'United_States_of_America': 'USA', 'United_Kingdom': 'UK'})
+
+
+#DataFrame nach Kontinenten aufschlüsseln und als Kuchendiagramm ausgeben
+cases_per_continent = df_original.groupby('continentExp', as_index=False)['cases'].sum()
+#print(cases_per_continent)
+
+labels = cases_per_continent['continentExp']
+sizes = cases_per_continent['cases']
+colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue', 'black', 'red']
+explode = (0, 0, 0, 0.1, 0)
+
+plt.figure(figsize=(11,6))
+plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+		autopct='%1.1f%%', shadow=True, startangle=140)
+plt.xticks(rotation=40)
+plt.axis('equal')
+plt.title('Prozentualer Anteil der Covid-19 Fälle je Kontinent',fontsize=14)
+plt.legend()
+plt.show()
+
+
+#DataFrame nach Länder aufschlüsseln und in absteigender Reihenfolge nach Fällen sortieren
+df_per_country = df_original.groupby(['countriesAndTerritories', 'popData2018'],
+									 as_index=False)[['cases', 'deaths']].sum()
+
+df_per_country = df_per_country.sort_values(by='cases', ascending=0)
+
+
+#Sterblichkeitsrate und Fälle/Tode pro 100.000 Einwohner zu cases_per_country hinzufügen
+
+df_per_country['cases100k'] = round(((df_per_country['cases']/
+									  df_per_country['popData2018'])*100000))
+df_per_country['deaths100k'] = round(((df_per_country['deaths']/
+									   df_per_country['popData2018'])*100000))
+df_per_country['deathrate'] = round((df_per_country['deaths']/df_per_country['cases']), 4)
+#print(cases_per_country)
+
+
+#Durchschnitt, Max und Min der Fälle & Tode nach Länder ausmachen (wird an anderer Stelle ausgegebe)
+
+avg_cases = round(df_per_country['cases'].mean())
+max_cases = df_per_country['cases'].max()
+avg_deaths = round(df_per_country['deaths'].mean())
+max_deaths = df_per_country['deaths'].max()
+avg_deathrate = df_per_country['deathrate'].mean()
+max_deathrate = df_per_country['deathrate'].max()
+
+kpis = [max_cases, avg_cases, max_deaths, avg_deaths, max_deathrate, avg_deathrate]
+title = ['Max Fälle pro Land', 'Durschn.Fallzahl pro Land',
+		 'Max Tode pro Land', 'Durchschn. Todeszahl pro Land',
+		 'Max Sterblichkeitsrate pro Land',
+		 'Durschschn. Sterblichkeitsrate pro Land']
+
+numbers_country = pd.DataFrame({'Covid-19_Kennzahl': title, 'Ausprägung': kpis })
+#print(numbers_country)
+
+
+#Top10 der Länder mit größter Anzahl an Fällen(mit Fällen pro 100000Einwohner) in einem Balkendiagramm darstellen
+
+df_pc_top10 = df_per_country.nlargest(10, ['cases']) #selektiert n größte Werte in Spalte cases
+#print(cpc_top10)
+
+plt.figure(figsize=(11,6))
+plt.subplot(2,1,1)
+plt.bar(df_pc_top10['countriesAndTerritories'],df_pc_top10['cases'],color='blue',edgecolor='black')
+plt.title('Covid-19 Fälle je Land der 10 Länder mit den meisten Fällen',fontsize=14)
+plt.subplots_adjust(hspace=0.3)
+
+plt.subplot(2,1,2)
+plt.bar(df_pc_top10['countriesAndTerritories'],df_pc_top10['cases100k'],
+		color='blue',edgecolor='black')
+plt.title('Covid-19 Fälle pro 100.000 Einwohner je Land',fontsize=14)
+plt.show()
+
+
+#Top10 der Länder nach Fällen pro 100.000 Einwohner darstellen
+
+df_pc_top10_100k = df_per_country.nlargest(10, ['cases100k']) #selektiert n größte Werte in Spalte cases
+#print(cpc_top10)
+
+plt.figure(figsize=(11,6))
+plt.subplot(2,1,1)
+plt.bar(df_pc_top10_100k['countriesAndTerritories'],df_pc_top10_100k['cases'],
+		color='blue',edgecolor='black')
+plt.title('Covid-19 Fälle je Land der 10 Länder mit den meisten Fällen je 100.000 Einwohner',fontsize=14)
+plt.subplots_adjust(hspace=0.3)
+
+plt.subplot(2,1,2)
+plt.bar(df_pc_top10_100k['countriesAndTerritories'],df_pc_top10_100k['cases100k'],
+		color='blue',edgecolor='black')
+plt.title('Covid-19 Fälle pro 100.000 Einwohner je Land',fontsize=14)
+plt.show()
+
+
+#Land mit den meisten Fällen ausmachen und DataFrame nach diesem Land filtern
+
+df_pc_top1 = df_original.nlargest(1, ['cases'])
+
+pc_top1 = df_pc_top1['countriesAndTerritories'].values
+
+df_pc_top1 = df_original[df_original.countriesAndTerritories.isin(pc_top1)]
+#print(df_pc_top1)
+
+top1_per_day = df_pc_top1.groupby(['year', 'month','day'])[['cases', 'deaths']].sum()
+
+cum_top1_per_day_cases = np.cumsum(top1_per_day['cases'])
+cum_top1_per_day_deaths = np.cumsum(top1_per_day['deaths'])
+
+
+#DataFrame nach Deutschland filtern und kummulierte Töde/Fälle ausmachen
+
+is_germany = df_original['countriesAndTerritories'] == 'Germany'
+
+df_germany = df_original[is_germany]
+##print(df_germany)
+
+germany_per_day = df_germany.groupby(['year', 'month','day'])[['cases', 'deaths']].sum()
+#print(germany_per_day)
+
+cum_germany_per_day_cases = np.cumsum(germany_per_day['cases'])
+cum_germany_per_day_deaths = np.cumsum(germany_per_day['deaths'])
+
+
+#Top1 Land mit Deutschland nach Fällen und Toden vergleichen (Diagramme zeichnen)
+
+plt.figure(figsize=(11,6))
+cum_top1_per_day_cases.plot(x='day', y='cases', kind='line')
+plt.title('Kummulierte Covid-19 Fälle des Landes mit den meisten Fällen und Deutschland, aktuell:' + pc_top1, fontsize=14)
+plt.xlabel(None)
+cum_germany_per_day_cases.plot(x='day', y='cases', kind='line')
+plt.legend([pc_top1,'Deutschland'], fontsize=12)
+plt.show()
+
+plt.figure(figsize=(11,6))
+cum_top1_per_day_deaths.plot(x='day', y='deaths', kind='line')
+plt.title('Kummulierte Covid-19 Tode des Landes mit den meisten Fällen und Deutschland, aktuell:' + pc_top1, fontsize=14)
+plt.xlabel(None)
+cum_germany_per_day_deaths.plot(x='day', y='deaths', kind='line')
+plt.legend([pc_top1,'Deutschland'], fontsize=12)
+plt.show()
+
+#Standardmäßig ausgegebene Tabelle um dazugehörige Länder ergänzen
+df_pd_top1 = df_original.nlargest(1, ['deaths'])
+pd_top1 = df_pd_top1['countriesAndTerritories'].values
+
+df_pdr_top1 = df_per_country.nlargest(1, ['deathrate'])
+pdr_top1 = df_pdr_top1['countriesAndTerritories'].values
+
+countries = [pc_top1, '-', pd_top1,'-', pdr_top1, '-' ]
+
+numbers_country['Zugehöriges_Land'] = countries
+
+#Printbefehle zur schöneren Ausgabe in Konsole
+
+print('______________________________')
+print('')
+print(numbers_country)
 
 
