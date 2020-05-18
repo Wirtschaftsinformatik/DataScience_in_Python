@@ -1,5 +1,5 @@
 # Python Projekt - SoSe 2020
-#Maximilian Goebel - Stand: 16.05.20
+# Maximilian Goebel - Stand: 16.05.20
 # -*- coding: utf-8 -*-
 # Import notwendiger Packages
 

@@ -1,5 +1,5 @@
 #Anbei der Python Code zur Covid 19 Analyse von
-#Julian Gerhardt(Matrikelnr:185648)
+#Julian Gerhardt
 #Forschungsfrage des Projekt: Analyse von Covid 19 auf den verschiedenen Kontinenten
 #Der Code wurde mit Sypder(Anaconda) geschrieben und beinhaltet die packages
 #'pandas', 'matplotlib' und 'numpy', welche in den Workshopvideos bei Data Camp vorgestellt wurden
