@@ -9,3 +9,6 @@ Codesample8:    Sascha Wiedermann
 Codesample9:    Josephine Leib, Sabrina Lange
 Codesample10:   Sebastian Mohn
 Codesample11:   Sebastian Wolf
+Codesample12:   Fatima Ezzahra Aqebli
+Codesample13:   Jendrik Weber
+Codesample14:   Marvin Joncyk
