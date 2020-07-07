@@ -1,5 +1,0 @@
-# if you want to create python class for ui file
-# http://www.science.smith.edu/dftwiki/index.php/PyQt5_Tutorial:_A_Window_Application_with_File_IO
-
-pyuic5 -x mainTextanalyser.ui -o mainTextanalyser.py
-
