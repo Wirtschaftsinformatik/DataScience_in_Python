@@ -1,7 +1,8 @@
 ### What is this repository for? ###
 
 * Das Repository enthält ausgewählten Code der im Rahmen der Python Veranstaltungen entstanden ist
-* Version: 2020
+* Version:  2020
+            2021
 
 ### How do I get set up? ###
 
